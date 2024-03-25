@@ -34,19 +34,14 @@ int main()
 
     printNodes(head);
 
-//    printf("HEAD IS %"SCNu32, head->value);
-//    printf("\n");
-//    printf("TAIL IS %"SCNu32, tail->value);
-//    printf("\n");
-
     // --------- Подготовка и запуск потоков
     pthread_t one_thread, zero_thread;
 
     struct OperationReport one_report = { 0, 0 };
     struct OperationReport zero_report = { 0, 0 };
 
-    struct OperationArgs one_args = { ONE_BIT, &one_report, tail };
-    struct OperationArgs zero_args = { ZERO_BIT, &zero_report, head };
+    struct OperationArgs one_args = { ONE_BIT, &one_report, tail, size };
+    struct OperationArgs zero_args = { ZERO_BIT, &zero_report, head, size };
 
     initMutex();
 
@@ -57,7 +52,6 @@ int main()
     pthread_join(zero_thread, NULL);
 
     delMutex();
-
     // ---------
 
     // --------- Просмотр результатов

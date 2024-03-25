@@ -6,14 +6,14 @@ void* getBitInformation(void* args)
 
     pthread_mutex_lock(&changing_element);
 
-    if (arg->element == NULL || atomic_load(&arg->element->is_accounted))
+    if (arg->element == NULL || proccessed_count >= arg->list_size)
     {
         pthread_mutex_unlock(&changing_element);
         pthread_exit(NULL);
     }
     else
     {
-        atomic_store(&arg->element->is_accounted, true);
+        ++proccessed_count;
         pthread_mutex_unlock(&changing_element);
     }
 

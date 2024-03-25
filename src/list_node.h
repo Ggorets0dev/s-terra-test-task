@@ -1,8 +1,6 @@
 #ifndef LIST_NODE_H
 #define LIST_NODE_H
 
-#include <stdatomic.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include "inttypes.h"
@@ -14,7 +12,6 @@ struct ListNode
 
     struct ListNode* prev;
     struct ListNode* next;
-    atomic_bool is_accounted;
 };
 
 struct ListNode* createNode();

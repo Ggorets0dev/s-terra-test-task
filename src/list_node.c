@@ -7,7 +7,6 @@ struct ListNode* createNode()
     elem->value = getRandomNumber();
     elem->next = NULL;
     elem->prev = NULL;
-    elem->is_accounted = ATOMIC_VAR_INIT(false);
 
     return elem;
 }

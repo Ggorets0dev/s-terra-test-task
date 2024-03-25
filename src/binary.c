@@ -82,12 +82,12 @@ void printReport(struct OperationReport* report)
     printf("\n");
 }
 
-void initMutex()
+inline void initMutex()
 {
     pthread_mutex_init(&changing_element, NULL);
 }
 
-void delMutex()
+inline void delMutex()
 {
     pthread_mutex_destroy(&changing_element);
 }

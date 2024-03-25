@@ -28,7 +28,7 @@ void printNodes(struct ListNode* head)
 
     while (head_c != NULL)
     {
-        printf("%u) Value is %"PRIu32, inx, head_c->value);
+        printf("%"PRIu32") Value is %"PRIu32, inx, head_c->value);
         printf("\n");
 
         head_c = head_c->next;

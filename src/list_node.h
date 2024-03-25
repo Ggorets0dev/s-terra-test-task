@@ -1,6 +1,7 @@
 #ifndef LIST_NODE_H
 #define LIST_NODE_H
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include "inttypes.h"

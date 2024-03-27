@@ -7,6 +7,7 @@ struct ListNode* createNode()
     elem->value = getRandomNumber();
     elem->next = NULL;
     elem->prev = NULL;
+    elem->is_occupied = false;
 
     return elem;
 }
@@ -15,8 +16,11 @@ struct ListNode* addNode(struct ListNode* prev)
 {
     struct ListNode* elem = createNode();
 
-    prev->next = elem;
-    elem->prev = prev;
+    if (prev != NULL)
+    {
+        prev->next = elem;
+        elem->prev = prev;
+    }
 
     return elem;
 }
@@ -33,17 +37,5 @@ void printNodes(struct ListNode* head)
 
         head_c = head_c->next;
         ++inx;
-    }
-}
-
-void freeNodes(struct ListNode* head)
-{
-    struct ListNode* current = NULL;
-
-    while (head != NULL)
-    {
-        current = head;
-        head = head->next;
-        free(current);
     }
 }

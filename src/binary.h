@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <limits.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <pthread.h>
 #include "list_node.h"
 
@@ -22,14 +23,16 @@ struct OperationReport
 struct OperationArgs
 {
     enum OperationMode mode;
+
     struct OperationReport* report;
     struct ListNode* element;
+
     uint32_t list_size;
 };
 
 static pthread_mutex_t changing_element;
 
-static uint32_t proccessed_count = 0;
+static uint32_t free_count = 0;
 
 void initMutex();
 void delMutex();
@@ -37,8 +40,6 @@ void delMutex();
 void* getBitInformation(void* args);
 
 uint32_t countOneBits(uint32_t value);
-
-uint32_t countZeroBits(uint32_t value);
 
 void printReport(struct OperationReport* report);
 

@@ -3,35 +3,44 @@
 void* getBitInformation(void* args)
 {
     struct OperationArgs* arg = (struct OperationArgs*)args;
+    struct ListNode* current = arg->element;
+
+    if (free_count >= arg->list_size || current == NULL || current->is_occupied)
+        pthread_exit(NULL);
+    else
+        current->is_occupied = true;
 
     pthread_mutex_lock(&changing_element);
 
-    if (arg->element == NULL || proccessed_count >= arg->list_size)
-    {
-        pthread_mutex_unlock(&changing_element);
-        pthread_exit(NULL);
-    }
-    else
-    {
-        ++proccessed_count;
-        pthread_mutex_unlock(&changing_element);
-    }
+    uint32_t bits_cnt = (arg->mode == ONE_BIT) ? countOneBits(current->value) : countOneBits(~(current->value));
 
-    if (arg->mode == ZERO_BIT)
-    {
-        arg->report->bit_cnt += countZeroBits(arg->element->value);
-        arg->report->elem_cnt++;
+    arg->report->elem_cnt++;
+    arg->report->bit_cnt += bits_cnt;
 
-        arg->element = arg->element->next;
+    if (arg->mode == ZERO_BIT && current->next != NULL)
+    {
+        current->next->prev = NULL;
+
+        if (current->next->is_occupied)
+            arg->element = NULL;
+        else
+            arg->element = current->next;
     }
 
-    else if (arg->mode == ONE_BIT)
+    else if (arg->mode == ONE_BIT && current->prev != NULL)
     {
-        arg->report->bit_cnt += countOneBits(arg->element->value);
-        arg->report->elem_cnt++;
+        current->prev->next = NULL;
 
-        arg->element = arg->element->prev;
+        if (current->prev->is_occupied)
+            arg->element = NULL;
+         else
+            arg->element = current->prev;
     }
+
+    free_count++;
+    free(current);
+
+    pthread_mutex_unlock(&changing_element);
 
     getBitInformation((void*)arg);
 }
@@ -47,30 +56,6 @@ uint32_t countOneBits(uint32_t value)
     }
 
     return cnt;
-}
-
-uint32_t countZeroBits(uint32_t value)
-{
-    uint32_t final_cnt = 0;
-    uint32_t temp_cnt = 0;
-
-    while (value)
-    {
-        if (value & 1)
-        {
-            final_cnt += temp_cnt;
-            temp_cnt = 0;
-        }
-
-        else
-        {
-            ++temp_cnt;
-        }
-
-        value >>= 1;
-    }
-
-    return final_cnt;
 }
 
 void printReport(struct OperationReport* report)

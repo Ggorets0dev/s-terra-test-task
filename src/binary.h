@@ -33,9 +33,6 @@ struct OperationArgs
 
 static pthread_mutex_t changing_element;
 
-//static uint32_t processed_cnt = 0;
-//static uint32_t free_count = 0;
-
 static atomic_ulong proc_cnt;
 static atomic_ullong free_cnt;
 

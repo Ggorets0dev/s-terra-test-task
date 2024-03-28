@@ -1,21 +1,21 @@
-#include "binary.h"
+﻿#include "binary.h"
 
 void* getBitInformation(void* args)
-{
+{	
     struct OperationArgs* arg = (struct OperationArgs*)args;
     struct ListNode* current = arg->element;
 
-    if (free_count >= arg->list_size || current == NULL || current->is_occupied)
+    if (atomic_load(&free_cnt) >= arg->list_size || current == NULL || current->is_occupied)
         pthread_exit(NULL);
     else
         current->is_occupied = true;
-
-    pthread_mutex_lock(&changing_element);
 
     uint32_t bits_cnt = (arg->mode == ONE_BIT) ? countOneBits(current->value) : countOneBits(~(current->value));
 
     arg->report->elem_cnt++;
     arg->report->bit_cnt += bits_cnt;
+
+    pthread_mutex_lock(&changing_element);
 
     if (arg->mode == ZERO_BIT && current->next != NULL)
     {
@@ -37,10 +37,12 @@ void* getBitInformation(void* args)
             arg->element = current->prev;
     }
 
-    free_count++;
-    free(current);
-
     pthread_mutex_unlock(&changing_element);
+
+    atomic_fetch_add(&proc_cnt, 1);
+    atomic_fetch_add(&free_cnt, 1);
+
+    free(current);
 
     getBitInformation((void*)arg);
 }
@@ -70,9 +72,15 @@ void printReport(struct OperationReport* report)
 inline void initMutex()
 {
     pthread_mutex_init(&changing_element, NULL);
+
+    proc_cnt = ATOMIC_VAR_INIT(0);
+    free_cnt = ATOMIC_VAR_INIT(0);
 }
 
 inline void delMutex()
 {
     pthread_mutex_destroy(&changing_element);
+
+    printf("PROCESSED %lu \n", atomic_load(&proc_cnt));
+    printf("FREED %lu \n", atomic_load(&free_cnt));
 }

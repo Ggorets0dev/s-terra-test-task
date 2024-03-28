@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <pthread.h>
+#include <stdatomic.h>
 #include "list_node.h"
 
 enum OperationMode
@@ -32,7 +33,11 @@ struct OperationArgs
 
 static pthread_mutex_t changing_element;
 
-static uint32_t free_count = 0;
+//static uint32_t processed_cnt = 0;
+//static uint32_t free_count = 0;
+
+static atomic_ulong proc_cnt;
+static atomic_ullong free_cnt;
 
 void initMutex();
 void delMutex();

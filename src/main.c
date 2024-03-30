@@ -9,6 +9,7 @@
 #include "random.h"
 #include "list_node.h"
 #include "binary.h"
+#include "typedefs.h"
 
 int main(int argc, char* argv[])
 {
@@ -32,8 +33,8 @@ int main(int argc, char* argv[])
         return 0;
 
     // --------- Заполнение двусвязного списка
-    struct ListNode* head = NULL;
-    struct ListNode* tail = NULL;
+    PNode head = NULL;
+    PNode tail = NULL;
 
     for (uint32_t i = 0; i < size; ++i)
     {
@@ -49,7 +50,7 @@ int main(int argc, char* argv[])
     }
     // ---------
 
-    printNodes(head);
+     // printNodes(head);
 
     // --------- Подготовка и запуск потоков
     pthread_t one_thread, zero_thread;
@@ -61,6 +62,7 @@ int main(int argc, char* argv[])
     struct OperationArgs zero_args = { ZERO_BIT, &zero_report, head, size };
 
     initMutex();
+    setBorders(head, tail);
 
     int status;
 
@@ -80,19 +82,19 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    status = pthread_join(one_thread, NULL);
-
-    if (status != 0)
-    {
-        fprintf(stderr, "Не удалось дождаться завершения потока для подсчета единичных битов\n");
-        return 1;
-    }
-
     status = pthread_join(zero_thread, NULL);
 
     if (status != 0)
     {
         fprintf(stderr, "Не удалось дождаться завершения потока для подсчета нулевых битов\n");
+        return 1;
+    }
+
+    status = pthread_join(one_thread, NULL);
+
+    if (status != 0)
+    {
+        fprintf(stderr, "Не удалось дождаться завершения потока для подсчета единичных битов\n");
         return 1;
     }
 

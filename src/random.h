@@ -2,7 +2,8 @@
 #define RANDOM_H
 
 #include <stdlib.h>
+#include <stdint.h>
 
-int32_t getRandomNumber();
+uint16_t getRandomNumber();
 
 #endif // RANDOM_H

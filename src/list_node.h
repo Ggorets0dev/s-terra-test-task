@@ -6,21 +6,22 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "inttypes.h"
+#include "typedefs.h"
 #include "random.h"
 
 struct ListNode
 {
-    int32_t value;
+    int16_t value;
     bool is_occupied;
 
-    struct ListNode* prev;
-    struct ListNode* next;
+    PNode prev;
+    PNode next;
 };
 
-struct ListNode* createNode();
+PNode createNode();
 
-struct ListNode* addNode(struct ListNode* prev);
+PNode addNode(PNode prev);
 
-void printNodes(struct ListNode* head);
+void printNodes(PNode head);
 
 #endif // LIST_NODE_H

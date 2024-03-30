@@ -1,8 +1,8 @@
 #include "list_node.h"
 
-struct ListNode* createNode()
+PNode createNode()
 {
-    struct ListNode* elem = (struct ListNode*)malloc(sizeof(struct ListNode));
+    PNode elem = (PNode)malloc(sizeof(struct ListNode));
 
     elem->value = getRandomNumber();
     elem->next = NULL;
@@ -12,9 +12,9 @@ struct ListNode* createNode()
     return elem;
 }
 
-struct ListNode* addNode(struct ListNode* prev)
+PNode addNode(PNode prev)
 {
-    struct ListNode* elem = createNode();
+    PNode elem = createNode();
 
     if (prev != NULL)
     {
@@ -25,13 +25,13 @@ struct ListNode* addNode(struct ListNode* prev)
     return elem;
 }
 
-void printNodes(struct ListNode* head)
+void printNodes(PNode head)
 {
     uint32_t inx = 1;
-    struct ListNode* head_c = head;
+    PNode head_c = head;
 
     while (head_c != NULL)
-    {
+    {        
         printf("%"PRIu32") Value is %"PRIu32, inx, head_c->value);
         printf("\n");
 

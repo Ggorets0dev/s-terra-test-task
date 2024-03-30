@@ -22,7 +22,7 @@
 
 | Наименование | Значение |
 |:---|:---|
-| Операционная система | Debian GNU/Linux 12 (bookworm) x86_64 |
+| Операционная система | Debian GNU/Linux 12 (bookworm) x86_64 & Ubuntu 22.04.4 LTS on Windows 10 x86_64 |
 | Версия CMake | 3.25.1 |
 | Стандарт языка C | C99 |
 

@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdatomic.h>
 #include "inttypes.h"
 #include "typedefs.h"
 #include "random.h"
@@ -12,7 +13,7 @@
 struct ListNode
 {
     int16_t value;
-    bool is_occupied;
+    atomic_bool is_occupied;
 
     PNode prev;
     PNode next;

@@ -7,7 +7,7 @@ PNode createNode()
     elem->value = getRandomNumber();
     elem->next = NULL;
     elem->prev = NULL;
-    elem->is_occupied = false;
+    elem->is_occupied = ATOMIC_VAR_INIT(false);
 
     return elem;
 }

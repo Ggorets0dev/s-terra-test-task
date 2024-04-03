@@ -11,16 +11,25 @@ void* getBitInformation(void* args)
     {
         current = is_zero ? head : tail;
 
-        if (current == NULL)
+        if (current == NULL || current->is_occupied)
             break;
 
         // --------- Произвести подсчет элемента
+        atomic_store(&current->is_occupied, true);
+
         bits_cnt = is_zero ? countOneBits(~current->value) : countOneBits(current->value);
         arg->report->bit_cnt += bits_cnt;
         arg->report->elem_cnt++;
         // ---------
 
         pthread_mutex_lock(&changes);
+
+        // --------- Удалить ссылку на себя у элемента-кандидата
+        if (is_zero && current->next != NULL)
+            current->next->prev = NULL;
+        if (!is_zero && current->prev != NULL)
+            current->prev->next = NULL;
+        // ---------
 
         // --------- Перенести указатель на элемент-кандидат
         if (is_zero)
@@ -35,13 +44,6 @@ void* getBitInformation(void* args)
             else
                 tail = NULL;
         }
-        // ---------
-
-        // --------- Удалить ссылку на себя у элемента-кандидата
-        if (is_zero && current->next != NULL)
-            current->next->prev = NULL;
-        if (!is_zero && current->prev != NULL)
-            current->prev->next = NULL;
         // ---------
 
         pthread_mutex_unlock(&changes);

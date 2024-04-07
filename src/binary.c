@@ -7,12 +7,17 @@ void* getBitInformation(void* args)
     PNode current = is_zero ? head : tail;
     uint64_t bits_cnt;
 
-    while (atomic_load(&free_cnt) < arg->list_size)
+    while (true)
     {
+        pthread_mutex_lock(&changes);
         current = is_zero ? head : tail;
 
         if (current == NULL || current->is_occupied)
+        {
+            pthread_mutex_unlock(&changes);
             break;
+        }
+        pthread_mutex_unlock(&changes);
 
         // --------- Произвести подсчет элемента
         atomic_store(&current->is_occupied, true);
@@ -48,7 +53,6 @@ void* getBitInformation(void* args)
 
         pthread_mutex_unlock(&changes);
 
-        atomic_fetch_add(&free_cnt, 1);
         free(current);
     }
 }

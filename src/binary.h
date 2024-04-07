@@ -26,7 +26,6 @@ struct OperationArgs
 {
     enum OperationMode mode;
     struct OperationReport* report;
-    uint32_t list_size;
 };
 
 static pthread_mutex_t changes;

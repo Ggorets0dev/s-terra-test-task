@@ -58,8 +58,8 @@ int main(int argc, char* argv[])
     struct OperationReport one_report = { 0, 0 };
     struct OperationReport zero_report = { 0, 0 };
 
-    struct OperationArgs one_args = { ONE_BIT, &one_report, size };
-    struct OperationArgs zero_args = { ZERO_BIT, &zero_report, size };
+    struct OperationArgs one_args = { ONE_BIT, &one_report };
+    struct OperationArgs zero_args = { ZERO_BIT, &zero_report };
 
     initMutex();
     setBorders(head, tail);
